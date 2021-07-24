@@ -2,7 +2,7 @@ FROM alpine
 
 # RUN apk add --no-cache --virtual .gyp python make g++ pkgconfig pixman-dev cairo-dev pango-dev
 RUN apk add --update npm 
-RUN apk add python3 make g++
+RUN apk add python3 make g++ py3-setuptools
 RUN apk add linux-headers
 
 
