@@ -3,14 +3,19 @@ FROM alpine
 # RUN apk add --no-cache --virtual .gyp python make g++ pkgconfig pixman-dev cairo-dev pango-dev
 RUN apk add --update npm 
 RUN apk add python3 make g++
-RUN apk add py3-pip
-RUN pip install lgpio
+RUN apk add linux-headers
+
+
 
 COPY . /usr/node
 
 WORKDIR /usr/node
+RUN wget http://abyz.me.uk/lg/lg.zip \
+    && unzip lg.zip \
+    && cd lg \ 
+    && make 
 
-# RUN npm install
+RUN npm install
 
 WORKDIR /usr/node/src
 
