@@ -13,8 +13,13 @@ WORKDIR /usr/node
 RUN wget http://abyz.me.uk/lg/lg.zip \
     && unzip lg.zip \
     && cd lg \ 
-    && make \
-    && make install
+    && make 
+
+COPY ./src/Makefile /usr/node/lg/Makefile
+
+RUN make install
+
+    # && make install
 
 RUN npm install
 
