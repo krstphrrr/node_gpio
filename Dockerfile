@@ -1,4 +1,4 @@
-FROM node:alpine 
+FROM alpine
 
 # RUN apk add --no-cache --virtual .gyp python make g++ pkgconfig pixman-dev cairo-dev pango-dev
 
