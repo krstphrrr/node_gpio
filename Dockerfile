@@ -6,7 +6,7 @@ COPY . /usr/node
 
 WORKDIR /usr/node
 
-RUN npm install
+# RUN npm install
 
 WORKDIR /usr/node/src
 
