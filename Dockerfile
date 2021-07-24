@@ -17,10 +17,10 @@ RUN wget http://abyz.me.uk/lg/lg.zip \
 
 COPY ./src/Makefile /usr/node/lg/Makefile
 
+WORKDIR /usr/node/lg
 RUN make install
 
-    # && make install
-
+WORKDIR /usr/node
 RUN npm install
 
 WORKDIR /usr/node/src
