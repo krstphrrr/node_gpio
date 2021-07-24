@@ -1,7 +1,9 @@
 FROM alpine
 
 # RUN apk add --no-cache --virtual .gyp python make g++ pkgconfig pixman-dev cairo-dev pango-dev
-RUN apk add --update npm
+RUN apk add --update npm 
+RUN apk add python3 make g++
+
 COPY . /usr/node
 
 WORKDIR /usr/node
