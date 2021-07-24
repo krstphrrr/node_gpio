@@ -13,7 +13,8 @@ WORKDIR /usr/node
 RUN wget http://abyz.me.uk/lg/lg.zip \
     && unzip lg.zip \
     && cd lg \ 
-    && make 
+    && make \
+    && make install
 
 RUN npm install
 
