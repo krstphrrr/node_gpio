@@ -12,6 +12,3 @@ services:
       - "/dev/gpiomem"
     container_name: node
     working_dir: /usr/node
-    volumes:
-      # - drupal_test4_dbdata:/var/lib/mysql
-      - ./src:/usr/node/src
