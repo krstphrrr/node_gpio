@@ -11,4 +11,4 @@ services:
       - "/dev/gpiochip1"
       - "/dev/gpiomem"
     container_name: node
-    working_dir: /usr/node
+
