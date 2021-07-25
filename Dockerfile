@@ -27,4 +27,4 @@ WORKDIR /usr/node/src
 
 EXPOSE 3000
 
-CMD ["node", "index.js"]
+CMD ["npm", "start"]

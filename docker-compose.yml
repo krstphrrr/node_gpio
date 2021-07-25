@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  ngpio:
+    build:
+      context: .
+      dockerfile: .
+    ports:
+      - 3000:3000
+    devices:
+      - "/dev/gpiochip0"
+      - "/dev/gpiochip1"
+      - "/dev/gpiomem"
+    container_name: node
+    working_dir: /usr/node
+    volumes:
+      # - drupal_test4_dbdata:/var/lib/mysql
+      - ./src:/usr/node/src
