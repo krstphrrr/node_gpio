@@ -5,7 +5,9 @@ const port = 3000
 const LED = 23
 let swtch = 0
 app.get('/', (req,res)=>{
+
   h = lg.gpiochipOpen(0)
+  lg.gpiochipOpen
   lg.gpioClaimOutput(h,LED)
   switch(swtch){
     case 0:
@@ -20,17 +22,20 @@ app.get('/', (req,res)=>{
     console.log("cabrona no")
     lg.gpioWrite(h, LED, 0)
     res.send("cabrona no")
-    
+    lg.gpioFree(h,0)
+    lg.gpiochipClose(h)
   } else {
     console.log("cabrona si")
     lg.gpioWrite(h, LED, 1)
     res.send("cabrona si")
+    lg.gpioFree(h,0)
+    lg.gpiochipClose(h)
   }
 
   // h = lg.gpiochipOpen(0)
   // lg.gpioClaimOutput(h,LED)
 
-  lg.gpiochip_close(h)
+  
 })
 
 app.listen(port,()=>{
