@@ -28,7 +28,6 @@ app.get('/', (req,res)=>{
     res.send("cabrona si")
   }
 
-  lg.gpioWrite(h, LED, 0)
   lg.gpioFree(h,23)
   lg.gpiochipClose(h)
 })
