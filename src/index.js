@@ -1,13 +1,15 @@
 const express = require('express')
 const lg = require('lgpio')
+const visitCount = require('express-visit-counter')
 const app = express()
 const port = 3000
 const LED = 23
 let swtch = 0
-app.get('/', (req,res)=>{
+
+app.get('/', async (req,res)=>{
 
   h = lg.gpiochipOpen(0)
-  
+  let total = await visitCount.getCount()
   lg.gpioClaimOutput(h,LED)
   switch(swtch){
     case 0:
@@ -18,14 +20,14 @@ app.get('/', (req,res)=>{
       break 
   }
   if(swtch===0){
-    console.log("cabrona no")
+    
     lg.gpioWrite(h, LED, 0)
-    res.send("cabrona no")
+    res.send(`<b>sam visitor:${total}; LED off</b>`)
 
   } else {
-    console.log("cabrona si")
+    
     lg.gpioWrite(h, LED, 1)
-    res.send("cabrona si")
+    res.send(`<b>sam visitor:${total}; LED on</b>`)
   }
 
   lg.gpioFree(h,23)

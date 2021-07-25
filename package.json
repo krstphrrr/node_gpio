@@ -19,6 +19,7 @@
   "homepage": "https://github.com/krstphrrr/node_gpio#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "express-visit-counter": "^1.0.1",
     "lgpio": "^1.0.3",
     "nodemon": "^2.0.12"
   }
