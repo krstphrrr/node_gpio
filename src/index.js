@@ -11,7 +11,7 @@ app.use(visitCount({hook:counterId => counters[counterId] = (counters[counterId]
 app.get('/', (req,res)=>{
 
   h = lg.gpiochipOpen(0)
-  
+  let count
   lg.gpioClaimOutput(h,LED)
   switch(swtch){
     case 0:
@@ -22,16 +22,18 @@ app.get('/', (req,res)=>{
       break 
   }
   if(swtch===0){
-    
     lg.gpioWrite(h, LED, 0)
-    console.log(counters)
-    res.send(`<b>sam visitor:0; LED off</b>`)
+    for(let [key,value] of Object.entries(counters)){
+      count = value
+    }
+    res.send(`<b>sam visitor:${count}; LED off</b>`)
 
   } else {
-    
     lg.gpioWrite(h, LED, 1)
-    console.log(counters)
-    res.send(`<b>sam visitor:0; LED on</b>`)
+    for(let [key,value] of Object.entries(counters)){
+      count = value
+    }
+    res.send(`<b>sam visitor:${count}; LED on</b>`)
   }
 
   lg.gpioFree(h,23)
