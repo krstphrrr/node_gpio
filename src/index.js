@@ -18,11 +18,11 @@ app.get('/', (req,res)=>{
   if(swtch===0){
     
     console.log("cabrona no")
-    lg.gpio_write(h, LED, 0)
+    lg.gpioWrite(h, LED, 0)
     res.send("cabrona no")
   } else {
     console.log("cabrona si")
-    lg.gpio_write(h, LED, 1)
+    lg.gpioWrite(h, LED, 1)
     res.send("cabrona si")
   }
 
