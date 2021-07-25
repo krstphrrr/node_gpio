@@ -26,6 +26,7 @@ app.get('/', (req,res)=>{
     for(let [key,value] of Object.entries(counters)){
       count = value
     }
+    console.log(count)
     res.send(`<b>sam visitor:${count}; LED off</b>`)
 
   } else {
@@ -33,6 +34,7 @@ app.get('/', (req,res)=>{
     for(let [key,value] of Object.entries(counters)){
       count = value
     }
+    console.log(count)
     res.send(`<b>sam visitor:${count}; LED on</b>`)
   }
 
