@@ -46,6 +46,14 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+         - mountPath: /dev
+           name: dev-volume
+      volumes:
+      - name: dev-volume
+        hostPath:
+          path: /dev
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
