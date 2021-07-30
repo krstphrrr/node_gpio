@@ -16,7 +16,7 @@ app.get('/', (req,res)=>{
 })
 
 app.get('/red',(req,res)=>{
-  handle = lg.gpiochipOpen(0)
+  h = lg.gpiochipOpen(0)
   
   lg.gpioClaimOutput(h,RED)
   switch(swtch){
@@ -49,7 +49,7 @@ app.get('/red',(req,res)=>{
 })
 
 app.get('/yellow',(req,res)=>{
-  handle = lg.gpiochipOpen(0)
+  h = lg.gpiochipOpen(0)
   
   lg.gpioClaimOutput(h,YELLOW)
   switch(swtch){
@@ -82,7 +82,7 @@ app.get('/yellow',(req,res)=>{
 })
 
 app.get('/green',(req,res)=>{
-  handle = lg.gpiochipOpen(0)
+  h = lg.gpiochipOpen(0)
 
   lg.gpioClaimOutput(h,GREEN)
   switch(swtch){
