@@ -12,7 +12,7 @@ let count
 
 app.use(visitCount({hook:counterId => counters[counterId] = (counters[counterId] || 0)+1}))
 app.get('/', (req,res)=>{
-  res.send("please visit endpoints: '/red', '/yellow' or '/green'.")
+  res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
 app.get('/red',(req,res)=>{
@@ -41,7 +41,7 @@ app.get('/red',(req,res)=>{
       count = value
     }
     console.log(count)
-    res.send(`<b>sam visitor:${count}; LED on</b>`)
+    res.status(200).send(`<b>sam visitor:${count}; LED on</b>`)
   }
 
   lg.gpioFree(h,RED)
@@ -74,7 +74,7 @@ app.get('/yellow',(req,res)=>{
       count = value
     }
     console.log(count)
-    res.send(`<b>sam visitor:${count}; LED on</b>`)
+    res.status(200).send(`<b>sam visitor:${count}; LED on</b>`)
   }
 
   lg.gpioFree(h,YELLOW)
@@ -107,7 +107,7 @@ app.get('/green',(req,res)=>{
       count = value
     }
     console.log(count)
-    res.send(`<b>sam visitor:${count}; LED on</b>`)
+    res.status(200).send(`<b>sam visitor:${count}; LED on</b>`)
   }
 
   lg.gpioFree(h,GREEN)
