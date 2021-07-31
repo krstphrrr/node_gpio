@@ -1,23 +1,34 @@
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose');
+mongoose
+ .connect(
+  'mongodb://rootuser:example@localhost:27017',
+  {
+    useNewUrlParser:true,
+    useFindAndModify:false
+  }
+ )
+ .then(()=>console.log('mongodb connected'))
+ .catch(err=>console.log(err))
+
+ const PinSchema = mongoose.Schema({
+   red: Boolean,
+   yellow: Boolean,
+   green: Boolean
+ }) 
+const Pins = mongoose.model('pins', PinSchema)
+
 const lg = require('lgpio')
-const visitCount = require('express-visitor-counter')
-// const {turnItOn, turnItOff} = require('./utils')
+
 const app = express()
 const port = 3000
 
 
-let status = {"red":false,"yellow":false,"green":false}
-let ledPinout = {
-  "red":23,
-  "yellow": 20,
-  "green": 21
-}
-
 var corsOptions = {
   origin: ['https://samimaldita.tk','http://localhost:3000'],
   methods: ['GET','POST'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200 
 }
 
 const turnItOn =(pin)=>{
@@ -41,13 +52,15 @@ app.use(express.json());
 app.use(cors())
 
 // app.use(visitCount({hook:counterId => counters[counterId] = (counters[counterId] || 0)+1}))
-app.get('/', (req,res)=>{
+app.get('/', async (req,res)=>{
+  
   res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
-app.get('/:pin/:toggle',cors(corsOptions), (req,res)=>{
-  // console.log(req.params)
+app.get('/:pin/:toggle',cors(corsOptions), async (req,res)=>{
+  console.log(req.params)
   let actuator
+ 
   switch(req.params.pin){
     case "red":
       actuator = 23
@@ -63,9 +76,86 @@ app.get('/:pin/:toggle',cors(corsOptions), (req,res)=>{
   switch(parseInt(req.params.toggle)){
     case 1:
       turnItOn(actuator)
+      switch(req.params.pin){
+        case 'red':
+          await Pins.findOneAndUpdate(
+            {red: false},
+            {red: true},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+        case 'yellow':
+          await Pins.findOneAndUpdate(
+            {yellow: false},
+            {yellow: true},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+        case 'green':
+          await Pins.findOneAndUpdate(
+            {green: false},
+            {green: true},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+      }
+      
       break;
     case 0:
       turnItOff(actuator)
+      switch(req.params.pin){
+        case 'red':
+          await Pins.findOneAndUpdate(
+            {red: true},
+            {red: false},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+        case 'yellow':
+          await Pins.findOneAndUpdate(
+            {yellow: true},
+            {yellow: false},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+        case 'green':
+          await Pins.findOneAndUpdate(
+            {green: true},
+            {green: false},
+            {
+              new: true, 
+              useFindAndModify: false
+            }
+          )
+          .then(success=>console.log(success))
+          .catch(err=>console.log(err))
+          break
+      }
       break;
   }
   console.log("freeing device")
@@ -78,31 +168,41 @@ app.get('/:pin/:toggle',cors(corsOptions), (req,res)=>{
 
 app.get('/pinstatus',cors(corsOptions),async (req,res)=>{
   console.log("TOUCHED")
-  const statusObj = await iterLED()
-  res.send(statusObj)
+  let statusObj = {}
+  Pins.find({_id: '610597b6d83b3d61447644f0'})
+  .then(e=>{
+    statusObj['red'] = e[0]['red']
+    statusObj['yellow'] = e[0]['yellow']
+    statusObj['green'] = e[0]['green']
+    res.send(statusObj)
+  })
+  // console.
+  // const statusObj = await iterLED()
+  
 })
+const filtering = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate))
 
-function iterLED(){
-  handle = lg.gpiochipOpen(0)
-  let statCopy = Object.assign(status)
-  if(handle){
-    for(const [key,value] of Object.entries(ledPinout)){
-      console.log(key)
-      lg.gpioClaimOutput(handle,ledPinout[key])
-      switch(lg.gpioRead(handle,ledPinout[key])){
-        case 1:
-          statCopy[key] = true;
-          break;
-        case 0:
-          statCopy[key] = false;
-          break;
-      }
-      lg.gpioFree(handle,ledPinout[key])
-    }
-    lg.gpiochipClose(handle)
-    return statCopy
-  }
-}
+// function iterLED(){
+//   handle = lg.gpiochipOpen(0)
+//   let statCopy = Object.assign(status)
+//   if(handle){
+//     for(const [key,value] of Object.entries(ledPinout)){
+//       console.log(key)
+//       lg.gpioClaimOutput(handle,ledPinout[key])
+//       switch(lg.gpioRead(handle,ledPinout[key])){
+//         case 1:
+//           statCopy[key] = true;
+//           break;
+//         case 0:
+//           statCopy[key] = false;
+//           break;
+//       }
+//       lg.gpioFree(handle,ledPinout[key])
+//     }
+//     lg.gpiochipClose(handle)
+//     return statCopy
+//   }
+// }
 
 
 app.listen(port,()=>{

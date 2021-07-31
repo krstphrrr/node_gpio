@@ -23,10 +23,11 @@ services:
     image: mongo-express 
     restart: always
     ports: 
-      - 8081:8081 
+      - 8081:8081
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGOINIT}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGOINITPASS}
+      ME_CONFIG_MONGODB_URL: "mongodb://${MONGOINIT}:${MONGOINITPASS}@mongo:27017/"
 
     # working_dir: /usr/node
     # volumes:
