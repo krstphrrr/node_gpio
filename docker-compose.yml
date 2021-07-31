@@ -1,16 +1,16 @@
 version: "3.7"
 services:
-  # ngpio:
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   devices:
-  #     - "/dev/gpiochip0"
-  #     - "/dev/gpiochip1"
-  #     - "/dev/gpiomem"
-  #   container_name: node
+  ngpio:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    devices:
+      - "/dev/gpiochip0"
+      - "/dev/gpiochip1"
+      - "/dev/gpiomem"
+    container_name: node
   mongo:
     image: mongo:4.4
     restart: always
