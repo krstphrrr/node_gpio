@@ -2,12 +2,16 @@ const express = require('express')
 const cors = require('cors')
 const lg = require('lgpio')
 const visitCount = require('express-visitor-counter')
-const {ledPinout, turnItOn, turnItOff} = require('./utils')
+const {turnItOn, turnItOff} = require('./utils')
 const app = express()
 const port = 3000
 
 counters = {}
-
+let ledPinout = {
+  "red":23,
+  "yellow": 21,
+  "green": 20
+}
 let status = {"red":false,"yellow":false,"green":false}
 
 app.use(express.json());
