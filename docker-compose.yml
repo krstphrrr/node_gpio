@@ -11,6 +11,21 @@ services:
       - "/dev/gpiochip1"
       - "/dev/gpiomem"
     container_name: node
+  mongodb:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGOINIT}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGOINITPASS}
+  mongo-express:
+    image: mongo-express 
+    restart: always
+    ports: 
+      - 8081:8081 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGOINIT}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGOINITPASS}
+
     # working_dir: /usr/node
     # volumes:
     #   # - drupal_test4_dbdata:/var/lib/mysql
