@@ -6,7 +6,7 @@ let ledPinout = {
   "green": 20
 }
 
-exports.iterLED = (handle,status) =>{
+let iterLED = (handle,status) =>{
   if(handle){
     for(let i of Object.keys(ledPinout)){
       lg.gpioClaimOutput(handle,ledPinout[i])
@@ -42,3 +42,4 @@ exports.turnItOff=(pin)=>{
 }
 
 module.exports = ledPinout
+module.exports = iterLED
