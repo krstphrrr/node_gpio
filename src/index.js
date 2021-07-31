@@ -45,11 +45,11 @@ app.post('/red',(req,res)=>{
     
     case true:
       turnItOn(ledPinout['red'])
-      status['red'] = !status['red']
+      status['red'] = false
       break
     case false:
       turnItOff(ledPinout['red'])
-      status["red"] = !status['red']
+      status["red"] = true
   }
 
 })
@@ -59,24 +59,24 @@ app.post('/yellow',(req,res)=>{
   switch(req.body["yellow"]){
     case true:
       turnItOn(ledPinout['yellow'])
-      status['yellow'] = !status['yellow']
+      status['yellow'] = false
       break
     case false:
       turnItOff(ledPinout['yellow'])
-      status["yellow"] = !status['yellow']
+      status["yellow"] = true
   }
 })
 
 app.post('/green',(req,res)=>{
-  console.log(req.body)
+  console.log(req.body, status)
   switch(req.body["green"]){
     case true:
       turnItOn(ledPinout['green'])
-      status['green'] = !status['green']
+      status['green'] = false
       break
     case false:
       turnItOff(ledPinout['green'])
-      status["green"] = !status['green']
+      status["green"] = true
   }
 })
 
