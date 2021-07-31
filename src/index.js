@@ -45,15 +45,15 @@ app.get('/', (req,res)=>{
   res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
-app.post('/red',cors(corsOptions),(req,res)=>{
+app.post('/red',cors(corsOptions), async (req,res)=>{
   console.log(req.body)
   h = lg.gpiochipOpen(0)
   if(req.body['red']){
-    turnItOn(ledPinout['red'])
+    await turnItOn(ledPinout['red'])
     status['red'] = true
     // res.status(200).send("ok")
   } else {
-    turnItOff(ledPinout['red'])
+     await turnItOff(ledPinout['red'])
     status['red'] = false
     // res.status(200).send("ok")
   }
@@ -109,11 +109,11 @@ app.post('/green',cors(corsOptions),(req,res)=>{
 })
 
 
-app.get('/pinstatus',cors(corsOptions),(req,res)=>{
+app.get('/pinstatus',cors(corsOptions),async (req,res)=>{
   console.log("TOUCHED")
   // res.send(status)
   h = lg.gpiochipOpen(0)
-  let statusObj = iterLED(h)
+  let statusObj = await iterLED(h)
   res.send(statusObj)
 })
 
