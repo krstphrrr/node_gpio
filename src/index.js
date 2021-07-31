@@ -51,11 +51,11 @@ app.post('/red',cors(corsOptions),(req,res)=>{
   if(req.body['red']){
     turnItOn(ledPinout['red'])
     status['red'] = true
-    res.end('done')
+    res.status(200).send("ok")
   } else {
     turnItOff(ledPinout['red'])
     status['red'] = false
-    res.end("done")
+    res.status(200).send("ok")
   }
   // switch(req.body["red"]){
   //   case true:
