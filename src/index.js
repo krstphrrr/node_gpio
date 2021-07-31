@@ -6,11 +6,18 @@ const visitCount = require('express-visitor-counter')
 const app = express()
 const port = 3000
 
-counters = {}
+
+let status = {"red":false,"yellow":false,"green":false}
 let ledPinout = {
   "red":23,
   "yellow": 20,
   "green": 21
+}
+
+var corsOptions = {
+  origin: 'https://samimaldita.tk',
+  methods: ['GET','POST'],
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 const turnItOn =(pin)=>{
@@ -29,43 +36,49 @@ const turnItOff=(pin)=>{
   lg.gpiochipClose(h)
 }
 
-let status = {"red":false,"yellow":false,"green":false}
 
 app.use(express.json());
 app.use(cors())
 
-app.use(visitCount({hook:counterId => counters[counterId] = (counters[counterId] || 0)+1}))
+// app.use(visitCount({hook:counterId => counters[counterId] = (counters[counterId] || 0)+1}))
 app.get('/', (req,res)=>{
   res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
-app.post('/red',(req,res)=>{
+app.post('/red',cors(corsOptions),(req,res)=>{
   console.log(req.body)
   h = lg.gpiochipOpen(0)
-  switch(req.body["red"]){
-    case true:
-      // turnItOn(ledPinout['red'])
-      status['red'] = false
-      
-      lg.gpioClaimOutput(h,ledPinout['red'])
-      lg.gpioWrite(h, ledPinout['red'], 1)
-      lg.gpioFree(h,ledPinout['red'])
-      lg.gpiochipClose(h)
-      
-      break
-    case false:
-      // turnItOff(ledPinout['red'])
-      status["red"] = true
-      lg.gpioClaimOutput(h,ledPinout['red'])
-      lg.gpioWrite(h, ledPinout['red'], 0)
-      lg.gpioFree(h,ledPinout['red'])
-      lg.gpiochipClose(h)
-      break;
+  if(req.body['red']){
+    turnItOn(ledPinout['red'])
+    status['red'] = true
+  } else {
+    turnItOff(ledPinout['red'])
+    status['red'] = false
   }
+  // switch(req.body["red"]){
+  //   case true:
+  //     // turnItOn(ledPinout['red'])
+  //     status['red'] = false
+      
+  //     lg.gpioClaimOutput(h,ledPinout['red'])
+  //     lg.gpioWrite(h, ledPinout['red'], 1)
+  //     lg.gpioFree(h,ledPinout['red'])
+  //     lg.gpiochipClose(h)
+      
+  //     break
+  //   case false:
+  //     // turnItOff(ledPinout['red'])
+  //     status["red"] = true
+  //     lg.gpioClaimOutput(h,ledPinout['red'])
+  //     lg.gpioWrite(h, ledPinout['red'], 0)
+  //     lg.gpioFree(h,ledPinout['red'])
+  //     lg.gpiochipClose(h)
+  //     break;
+  // }
 
 })
 
-app.post('/yellow',(req,res)=>{
+app.post('/yellow',cors(corsOptions),(req,res)=>{
   console.log(req.body)
   switch(req.body["yellow"]){
     case true:
@@ -79,7 +92,7 @@ app.post('/yellow',(req,res)=>{
   }
 })
 
-app.post('/green',(req,res)=>{
+app.post('/green',cors(corsOptions),(req,res)=>{
   console.log(req.body, status)
   switch(req.body["green"]){
     case true:
@@ -94,7 +107,7 @@ app.post('/green',(req,res)=>{
 })
 
 
-app.get('/pinstatus',(req,res)=>{
+app.get('/pinstatus',cors(corsOptions),(req,res)=>{
   console.log("TOUCHED")
   // res.send(status)
   h = lg.gpiochipOpen(0)
@@ -128,4 +141,3 @@ app.listen(port,()=>{
   console.log(`todo esta bien; usando puerto:${port}`)
 })
 
-module.exports = status
