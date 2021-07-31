@@ -28,8 +28,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGOINIT}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGOINITPASS}
       ME_CONFIG_MONGODB_URL: "mongodb://${MONGOINIT}:${MONGOINITPASS}@mongo:27017/"
-
-    # working_dir: /usr/node
-    # volumes:
-    #   # - drupal_test4_dbdata:/var/lib/mysql
-    #   - ./src:/usr/node/src
+    volumes:
+      - mongodb:/data/db 
+      - mongodb_config:/data/configdb
+  volumes:
+      mongodb:
+      mongodb_config:

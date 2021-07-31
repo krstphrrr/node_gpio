@@ -3,7 +3,7 @@ const cors = require('cors')
 const mongoose = require('mongoose');
 mongoose
  .connect(
-  'mongodb://rootuser:example@localhost:27017',
+  'mongodb://rootuser:example@mongo:27017',
   {
     useNewUrlParser:true,
     useFindAndModify:false
@@ -19,11 +19,17 @@ mongoose
  }) 
 const Pins = mongoose.model('pins', PinSchema)
 
+const pin = new Pins({red:false, yellow:false, green:false})
+pin.save(function(err,pin){
+  if(err) return console.error(err)
+})
+
 const lg = require('lgpio')
 
 const app = express()
 const port = 3000
 
+Pins.save()
 
 var corsOptions = {
   origin: ['https://samimaldita.tk','http://localhost:3000'],
