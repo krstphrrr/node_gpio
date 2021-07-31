@@ -1,6 +1,6 @@
 const lg = require('lgpio')
 
-exports.ledPinout = {
+let ledPinout = {
   "red":23,
   "yellow": 21,
   "green": 20
@@ -40,3 +40,5 @@ exports.turnItOff=(pin)=>{
   lg.gpioFree(h,pin)
   lg.gpiochipClose(h)
 }
+
+module.exports = ledPinout
