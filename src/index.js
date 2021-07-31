@@ -114,6 +114,40 @@ app.get('/green',(req,res)=>{
   lg.gpiochipClose(h)
 })
 
+app.get('/pinstatus',(req,res)=>{
+  h = lg.gpiochipOpen(0)
+  let statusObj = iterLED(h)
+  res.send(statusObj)
+   
+})
+let ledPinout = {
+  "red":23,
+  "yellow": 21,
+  "green": 20
+}
+let ledStatus = {
+  "red": false, 
+  "yellow": false,
+  "green": false
+}
+
+const iterLED = (handle) =>{
+  if(handle){
+    for(let i of Object.keys(ledPinout)){
+      lg.gpioClaimOutput(handle,i)
+      lg.gpioRead(handle,i)
+      switch(lg.gpioRead(handle,i)){
+        case 1:
+          ledStatus[i] = true;
+          break;
+        case 0:
+          ledStatus[i] = false;
+          break;
+      }
+      return ledStatus
+    }
+  }
+}
 
 app.listen(port,()=>{
   console.log(`todo esta bien; usando puerto:${port}`)
