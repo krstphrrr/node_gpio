@@ -73,17 +73,17 @@ app.get('/pinstatus',(req,res)=>{
 
 const iterLED = (handle,stat) =>{
   if(handle){
-    for(let i of Object.keys(ledPinout)){
-      lg.gpioClaimOutput(handle,ledPinout[i])
-      switch(lg.gpioRead(handle,ledPinout[i])){
+    for(const [key,value] of Object.entries(ledPinout)){
+      lg.gpioClaimOutput(handle,ledPinout[key])
+      switch(lg.gpioRead(handle,ledPinout[key])){
         case 1:
-          stat[i] = true;
+          stat[key] = true;
           break;
         case 0:
-          stat[i] = false;
+          stat[key] = false;
           break;
       }
-      lg.gpioFree(handle,ledPinout[i])
+      lg.gpioFree(handle,ledPinout[key])
     }
     lg.gpiochipClose(handle)
     return this.stat
