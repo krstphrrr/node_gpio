@@ -15,7 +15,7 @@ let ledPinout = {
 }
 
 var corsOptions = {
-  origin: 'https://samimaldita.tk',
+  origin: ['https://samimaldita.tk','http://localhost:3000'],
   methods: ['GET','POST'],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
@@ -45,79 +45,45 @@ app.get('/', (req,res)=>{
   res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
-app.post('/red',cors(corsOptions), (req,res)=>{
-  console.log(req.body)
-  h = lg.gpiochipOpen(0)
-  if(req.body['red']){
-    turnItOn(ledPinout['red'])
-    status['red'] = true
-    // res.status(200).send("ok")
-  } else {
-    turnItOff(ledPinout['red'])
-    status['red'] = false
-    // res.status(200).send("ok")
-  }
-  // switch(req.body["red"]){
-  //   case true:
-  //     // turnItOn(ledPinout['red'])
-  //     status['red'] = false
-      
-  //     lg.gpioClaimOutput(h,ledPinout['red'])
-  //     lg.gpioWrite(h, ledPinout['red'], 1)
-  //     lg.gpioFree(h,ledPinout['red'])
-  //     lg.gpiochipClose(h)
-      
-  //     break
-  //   case false:
-  //     // turnItOff(ledPinout['red'])
-  //     status["red"] = true
-  //     lg.gpioClaimOutput(h,ledPinout['red'])
-  //     lg.gpioWrite(h, ledPinout['red'], 0)
-  //     lg.gpioFree(h,ledPinout['red'])
-  //     lg.gpiochipClose(h)
-  //     break;
-  // }
-
-})
-
-app.post('/yellow',cors(corsOptions),(req,res)=>{
-  console.log(req.body)
-  switch(req.body["yellow"]){
-    case true:
-      turnItOn(ledPinout['yellow'])
-      status['yellow'] = false
-      break
-    case false:
-      turnItOff(ledPinout['yellow'])
-      status["yellow"] = true
+app.get('/:pin/:toggle',cors(corsOptions), (req,res)=>{
+  // console.log(req.params)
+  let actuator
+  switch(req.params.pin){
+    case "red":
+      actuator = 23
+      break;
+    case "yellow":
+      actuator = 20
+      break;
+    case "green":
+      actuator = 21
       break;
   }
-})
 
-app.post('/green',cors(corsOptions),(req,res)=>{
-  console.log(req.body, status)
-  switch(req.body["green"]){
-    case true:
-      turnItOn(ledPinout['green'])
-      status['green'] = false
-      break
-    case false:
-      turnItOff(ledPinout['green'])
-      status["green"] = true
+  switch(parseInt(req.params.toggle)){
+    case 1:
+      turnItOn(actuator)
+      break;
+    case 0:
+      turnItOff(actuator)
       break;
   }
+  console.log("freeing device")
+  console.log("closing chip")
+  res.status(200).send()
+
 })
+
 
 
 app.get('/pinstatus',cors(corsOptions),async (req,res)=>{
   console.log("TOUCHED")
-  // res.send(status)
-  h = lg.gpiochipOpen(0)
-  let statusObj = await iterLED(h)
+  const statusObj = await iterLED()
   res.send(statusObj)
 })
 
-function iterLED(handle){
+function iterLED(){
+  handle = lg.gpiochipOpen(0)
   let statCopy = Object.assign(status)
   if(handle){
     for(const [key,value] of Object.entries(ledPinout)){
