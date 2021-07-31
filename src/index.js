@@ -174,7 +174,7 @@ app.get('/:pin/:toggle',cors(corsOptions), async (req,res)=>{
 app.get('/pinstatus',cors(corsOptions),async (req,res)=>{
   console.log("TOUCHED")
   let statusObj = {}
-  await Pins.find({_id: '610597b6d83b3d61447644f0'})
+  await Pins.find({})
   .then(e=>{
     statusObj['red'] = e[0]['red']
     statusObj['yellow'] = e[0]['yellow']
