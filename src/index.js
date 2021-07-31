@@ -8,7 +8,7 @@ const port = 3000
 
 counters = {}
 
-exports.status = {"red":false,"yellow":false,"green":false}
+let status = {"red":false,"yellow":false,"green":false}
 
 app.use(express.json());
 app.use(cors())
@@ -72,3 +72,4 @@ app.listen(port,()=>{
   console.log(`todo esta bien; usando puerto:${port}`)
 })
 
+module.exports = status
