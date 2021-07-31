@@ -6,24 +6,7 @@ let ledPinout = {
   "green": 20
 }
 
-let iterLED = (handle,status) =>{
-  if(handle){
-    for(let i of Object.keys(ledPinout)){
-      lg.gpioClaimOutput(handle,ledPinout[i])
-      switch(lg.gpioRead(handle,ledPinout[i])){
-        case 1:
-          status[i] = true;
-          break;
-        case 0:
-          status[i] = false;
-          break;
-      }
-      lg.gpioFree(handle,ledPinout[i])
-    }
-    lg.gpiochipClose(handle)
-    return this.status
-  }
-}
+
 
 exports.turnItOn =(pin)=>{
   h = lg.gpiochipOpen(0)
@@ -42,4 +25,3 @@ exports.turnItOff=(pin)=>{
 }
 
 module.exports = ledPinout
-module.exports = iterLED

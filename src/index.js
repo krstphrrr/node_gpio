@@ -67,6 +67,25 @@ app.get('/pinstatus',(req,res)=>{
   res.send(statusObj)
 })
 
+const iterLED = (handle,stat) =>{
+  if(handle){
+    for(let i of Object.keys(ledPinout)){
+      lg.gpioClaimOutput(handle,ledPinout[i])
+      switch(lg.gpioRead(handle,ledPinout[i])){
+        case 1:
+          stat[i] = true;
+          break;
+        case 0:
+          stat[i] = false;
+          break;
+      }
+      lg.gpioFree(handle,ledPinout[i])
+    }
+    lg.gpiochipClose(handle)
+    return this.stat
+  }
+}
+
 
 app.listen(port,()=>{
   console.log(`todo esta bien; usando puerto:${port}`)
