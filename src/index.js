@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const lg = require('lgpio')
 const visitCount = require('express-visitor-counter')
-const {ledPinout, iterLED, turnItOn, turnItOff} = require('./utils')
+const {ledPinout, turnItOn, turnItOff} = require('./utils')
 const app = express()
 const port = 3000
 
