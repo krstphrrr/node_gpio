@@ -45,15 +45,15 @@ app.get('/', (req,res)=>{
   res.status(200).send("please visit endpoints: '/red', '/yellow' or '/green'.")
 })
 
-app.post('/red',cors(corsOptions), async (req,res)=>{
+app.post('/red',cors(corsOptions), (req,res)=>{
   console.log(req.body)
   h = lg.gpiochipOpen(0)
   if(req.body['red']){
-    await turnItOn(ledPinout['red'])
+    turnItOn(ledPinout['red'])
     status['red'] = true
     // res.status(200).send("ok")
   } else {
-     await turnItOff(ledPinout['red'])
+    turnItOff(ledPinout['red'])
     status['red'] = false
     // res.status(200).send("ok")
   }
@@ -118,23 +118,23 @@ app.get('/pinstatus',cors(corsOptions),async (req,res)=>{
 })
 
 function iterLED(handle){
-  // let statCopy = Object.assign(status)
+  let statCopy = Object.assign(status)
   if(handle){
     for(const [key,value] of Object.entries(ledPinout)){
       console.log(key)
       lg.gpioClaimOutput(handle,ledPinout[key])
       switch(lg.gpioRead(handle,ledPinout[key])){
         case 1:
-          status[key] = true;
+          statCopy[key] = true;
           break;
         case 0:
-          status[key] = false;
+          statCopy[key] = false;
           break;
       }
       lg.gpioFree(handle,ledPinout[key])
     }
     lg.gpiochipClose(handle)
-    return status
+    return statCopy
   }
 }
 
