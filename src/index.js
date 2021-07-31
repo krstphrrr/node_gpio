@@ -67,27 +67,28 @@ app.get('/pinstatus',(req,res)=>{
   console.log("TOUCHED")
   // res.send(status)
   h = lg.gpiochipOpen(0)
-  let statusObj = iterLED(h, status)
+  let statusObj = iterLED(h)
   res.send(statusObj)
 })
 
-function iterLED(handle,stat){
+function iterLED(handle){
+  // let statCopy = Object.assign(status)
   if(handle){
     for(const [key,value] of Object.entries(ledPinout)){
       console.log(key)
       lg.gpioClaimOutput(handle,ledPinout[key])
       switch(lg.gpioRead(handle,ledPinout[key])){
         case 1:
-          stat[key] = true;
+          status[key] = true;
           break;
         case 0:
-          stat[key] = false;
+          status[key] = false;
           break;
       }
       lg.gpioFree(handle,ledPinout[key])
     }
     lg.gpiochipClose(handle)
-    return this.stat
+    return status
   }
 }
 
