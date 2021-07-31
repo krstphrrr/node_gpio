@@ -9,8 +9,8 @@ const port = 3000
 counters = {}
 let ledPinout = {
   "red":23,
-  "yellow": 21,
-  "green": 20
+  "yellow": 20,
+  "green": 21
 }
 
 const turnItOn =(pin)=>{
@@ -41,15 +41,26 @@ app.get('/', (req,res)=>{
 
 app.post('/red',(req,res)=>{
   console.log(req.body)
+  h = lg.gpiochipOpen(0)
   switch(req.body["red"]){
-    
     case true:
-      turnItOn(ledPinout['red'])
+      // turnItOn(ledPinout['red'])
       status['red'] = false
+      
+      lg.gpioClaimOutput(h,ledPinout['red'])
+      lg.gpioWrite(h, ledPinout['red'], 1)
+      lg.gpioFree(h,ledPinout['red'])
+      lg.gpiochipClose(h)
+      
       break
     case false:
-      turnItOff(ledPinout['red'])
+      // turnItOff(ledPinout['red'])
       status["red"] = true
+      lg.gpioClaimOutput(h,ledPinout['red'])
+      lg.gpioWrite(h, ledPinout['red'], 0)
+      lg.gpioFree(h,ledPinout['red'])
+      lg.gpiochipClose(h)
+      break;
   }
 
 })
@@ -64,6 +75,7 @@ app.post('/yellow',(req,res)=>{
     case false:
       turnItOff(ledPinout['yellow'])
       status["yellow"] = true
+      break;
   }
 })
 
@@ -77,6 +89,7 @@ app.post('/green',(req,res)=>{
     case false:
       turnItOff(ledPinout['green'])
       status["green"] = true
+      break;
   }
 })
 
