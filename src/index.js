@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const lg = require('lgpio')
 const visitCount = require('express-visitor-counter')
-const {turnItOn, turnItOff} = require('./utils')
+// const {turnItOn, turnItOff} = require('./utils')
 const app = express()
 const port = 3000
 
@@ -12,6 +12,23 @@ let ledPinout = {
   "yellow": 21,
   "green": 20
 }
+
+const turnItOn =(pin)=>{
+  h = lg.gpiochipOpen(0)
+  lg.gpioClaimOutput(h,pin)
+  lg.gpioWrite(h, pin, 1)
+  lg.gpioFree(h,pin)
+  lg.gpiochipClose(h)
+};
+
+const turnItOff=(pin)=>{
+  h = lg.gpiochipOpen(0)
+  lg.gpioClaimOutput(h,pin)
+  lg.gpioWrite(h, pin, 0)
+  lg.gpioFree(h,pin)
+  lg.gpiochipClose(h)
+}
+
 let status = {"red":false,"yellow":false,"green":false}
 
 app.use(express.json());
@@ -25,6 +42,7 @@ app.get('/', (req,res)=>{
 app.post('/red',(req,res)=>{
   console.log(req.body)
   switch(req.body["red"]){
+    
     case true:
       turnItOn(ledPinout['red'])
       status['red'] = !status['red']
