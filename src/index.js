@@ -134,9 +134,9 @@ let ledStatus = {
 const iterLED = (handle) =>{
   if(handle){
     for(let i of Object.keys(ledPinout)){
-      lg.gpioClaimOutput(handle,i)
-      lg.gpioRead(handle,i)
-      switch(lg.gpioRead(handle,i)){
+      lg.gpioClaimOutput(handle,ledPinout[i])
+      // lg.gpioRead(handle,ledPinout[i])
+      switch(lg.gpioRead(handle,ledPinout[i])){
         case 1:
           ledStatus[i] = true;
           break;
@@ -144,8 +144,8 @@ const iterLED = (handle) =>{
           ledStatus[i] = false;
           break;
       }
-      return ledStatus
     }
+    return ledStatus
   }
 }
 
