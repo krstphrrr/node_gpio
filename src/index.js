@@ -29,7 +29,6 @@ const lg = require('lgpio')
 const app = express()
 const port = 3000
 
-Pins.save()
 
 var corsOptions = {
   origin: ['https://samimaldita.tk','http://localhost:3000'],
