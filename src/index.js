@@ -71,9 +71,10 @@ app.get('/pinstatus',(req,res)=>{
   res.send(statusObj)
 })
 
-const iterLED = (handle,stat) =>{
+function iterLED(handle,stat){
   if(handle){
     for(const [key,value] of Object.entries(ledPinout)){
+      console.log(key)
       lg.gpioClaimOutput(handle,ledPinout[key])
       switch(lg.gpioRead(handle,ledPinout[key])){
         case 1:
