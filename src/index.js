@@ -144,7 +144,9 @@ const iterLED = (handle) =>{
           ledStatus[i] = false;
           break;
       }
+      lg.gpioFree(handle,ledPinout[i])
     }
+    lg.gpiochipClose(handle)
     return ledStatus
   }
 }
